@@ -1,14 +1,18 @@
 let choices = ['Rock', 'Paper', 'Scissors'];
 let compChoice;
 let result,
-    userChoice;
+    userChoice,
+    compScore,
+    userScore,
+    roundCount,
+    winner;
 
 //generate random coice from computer
 function computerPlay(choices){
   compChoice = choices[Math.floor(Math.random() * choices.length)];
   return compChoice;
   }
-compChoice = computerPlay(choices);
+//compChoice = computerPlay(choices);
 
 //user's choice
 userChoice = 'Rock';
@@ -17,8 +21,34 @@ userChoice = 'Rock';
 function playRound(userChoice, compChoice) {
   if(userChoice === compChoice) {
     result = 'Tie';
-    return result;
-  } else return 'hooray!';
+    return;
+  } else if ((userChoice === 'Rock' && compChoice === 'Scissors') || (userChoice === 'Scissors' && compChoice === 'Paper') || (userChoice === 'Paper' && compChoice === 'Rock')) {
+    //result = 'User wins!';
+    return userScore += 1;
+  } else {
+    //result = 'Comp beat ya faaag :p';
+    return compScore += 1;
+  }
 }
 
-console.log(playRound(userChoice, compChoice));
+//play 5 rounds, keep track of scores and log the winner
+function game(userChoice, compChoice) {
+  roundCount = 5;
+  compScore = 0;
+  userScore = 0;
+  for(let i = 0; i < roundCount; i++){
+    compChoice = computerPlay(choices);
+    playRound(userChoice, compChoice);
+
+    console.log(`comp choose ${compChoice}!`);
+    console.log(`user choose ${userChoice}!`);
+
+    console.log(`scores are comp:${compScore} user:${userScore}`);
+  }
+  (userScore > compScore) ? winner = 'User wins' : winner = 'comp wins';
+  return winner;
+} 
+
+// console.log(`comp choose ${compChoice}!`);
+// console.log(`user choose ${userChoice}!`);
+console.log(game(userChoice, compChoice));
