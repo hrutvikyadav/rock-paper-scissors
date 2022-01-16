@@ -1,32 +1,30 @@
 let choices = ['Rock', 'Paper', 'Scissors'];
-let compChoice;
-let result,
+let compChoice,
     userChoice,
     compScore,
     userScore,
     roundCount,
     winner;
 
-//generate random coice from computer
+//generate random choice from computer
 function computerPlay(choices){
   compChoice = choices[Math.floor(Math.random() * choices.length)];
   return compChoice;
   }
-//compChoice = computerPlay(choices);
-
-//user's choice
-userChoice = 'Rock';
 
 //play the roucnd using above values and declare winner
 function playRound(userChoice, compChoice) {
-  if(userChoice === compChoice) {
-    result = 'Tie';
+  //debug case insensitivity
+  let u = typeof userChoice;
+  let c = typeof compChoice
+  console.log(`userchoice is ${u}, compchoice is ${c}`);
+
+  //conditions to decide winner and update score
+  if(userChoice.toLowerCase() === compChoice.toLowerCase()) {
     return;
-  } else if ((userChoice === 'Rock' && compChoice === 'Scissors') || (userChoice === 'Scissors' && compChoice === 'Paper') || (userChoice === 'Paper' && compChoice === 'Rock')) {
-    //result = 'User wins!';
+  } else if ((userChoice.toLowerCase() === 'rock' && compChoice.toLowerCase() === 'scissors') || (userChoice.toLowerCase() === 'scissors' && compChoice.toLowerCase() === 'paper') || (userChoice.toLowerCase() === 'paper' && compChoice.toLowerCase() === 'rock')) {
     return userScore += 1;
   } else {
-    //result = 'Comp beat ya faaag :p';
     return compScore += 1;
   }
 }
@@ -38,13 +36,18 @@ function game(userChoice, compChoice) {
   userScore = 0;
   for(let i = 0; i < roundCount; i++){
     compChoice = computerPlay(choices);
+    //user's choice
+    userChoice = prompt('Enter your choice');
     playRound(userChoice, compChoice);
 
     console.log(`comp choose ${compChoice}!`);
     console.log(`user choose ${userChoice}!`);
+    console.log(typeof userChoice);//debug case insensitivity
 
     console.log(`scores are comp:${compScore} user:${userScore}`);
   }
+  //deal with ties
+  if (userScore === compScore) return 'It\'s a tie!!!!!!';
   (userScore > compScore) ? winner = 'User wins' : winner = 'comp wins';
   return winner;
 } 
