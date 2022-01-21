@@ -1,10 +1,10 @@
 let choices = ['Rock', 'Paper', 'Scissors'];
 let compChoice,
     userChoice,
-    compScore,
-    userScore,
+    compScore = 0,
+    userScore = 0,
     roundCount,
-    winner;
+    winner='';
 
 //generate random choice from computer
 function computerPlay(choices){
@@ -14,44 +14,42 @@ function computerPlay(choices){
 
 //play the roucnd using above values and declare winner
 function playRound(userChoice, compChoice) {
-  //debug case insensitivity
-  let u = typeof userChoice;
-  let c = typeof compChoice
-  console.log(`userchoice is ${u}, compchoice is ${c}`);
+  console.log(`userchoice is ${userChoice}, compchoice is ${compChoice}`);
 
   //conditions to decide winner and update score
   if(userChoice.toLowerCase() === compChoice.toLowerCase()) {
-    return;
+    //console.log('tie');
+    result.textContent = `TIE.. Scores are User:${userScore}  Comp:${compScore}`;
   } else if ((userChoice.toLowerCase() === 'rock' && compChoice.toLowerCase() === 'scissors') || (userChoice.toLowerCase() === 'scissors' && compChoice.toLowerCase() === 'paper') || (userChoice.toLowerCase() === 'paper' && compChoice.toLowerCase() === 'rock')) {
-    return userScore += 1;
+    //console.log('user wins');//userScore += 1;
+    userScore += 1;
+    result.textContent = `User wins.. Scores are User:${userScore}  Comp:${compScore}`;
   } else {
-    return compScore += 1;
+    //console.log('comp wins');//compScore += 1;
+    compScore +=1;
+    result.textContent = `Comp wins.. Scores are User:${userScore}  Comp:${compScore}`;
+  }
+  //final score-
+  if(userScore===5 || compScore===5) {
+    (userScore===5) ? winner = 'USER' : winner = 'Comp';
+    result.textContent = `Game Over.. Scores are User:${userScore}  Comp:${compScore} | ${winner} wins!!`;
+    return;
   }
 }
 
-//play 5 rounds, keep track of scores and log the winner
-function game(userChoice, compChoice) {
-  roundCount = 5;
-  compScore = 0;
-  userScore = 0;
-  for(let i = 0; i < roundCount; i++){
+const result = document.querySelector('.result');
+const buttons = document.querySelectorAll('button');
+//console.log(buttons);
+buttons.forEach(button => {
+  //listen to click events and determine user choice
+  button.addEventListener('click', (e) =>{
+    userChoice = e.target.className;
     compChoice = computerPlay(choices);
-    //user's choice
-    userChoice = prompt('Enter your choice');
+    
+    //stop if winner is declared
+    if(winner !== '') return;
+    //playgame
     playRound(userChoice, compChoice);
-
-    console.log(`comp choose ${compChoice}!`);
-    console.log(`user choose ${userChoice}!`);
-    console.log(typeof userChoice);//debug case insensitivity
-
-    console.log(`scores are comp:${compScore} user:${userScore}`);
-  }
-  //deal with ties
-  if (userScore === compScore) return 'It\'s a tie!!!!!!';
-  (userScore > compScore) ? winner = 'User wins' : winner = 'comp wins';
-  return winner;
-} 
-
-// console.log(`comp choose ${compChoice}!`);
-// console.log(`user choose ${userChoice}!`);
-console.log(game(userChoice, compChoice));
+    //console.log(typeof e.target.className);
+  });  
+});
